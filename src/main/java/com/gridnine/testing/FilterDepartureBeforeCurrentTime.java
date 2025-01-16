@@ -3,7 +3,7 @@ package com.gridnine.testing;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class FilterDepartureBeforeCurrentTime implements FilterService {
+public class FilterDepartureBeforeCurrentTime implements Filter {
 
     @Override
     public List<Flight> filter(List<Flight> flights) {
