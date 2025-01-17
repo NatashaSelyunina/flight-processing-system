@@ -5,6 +5,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         List<Flight> flights = FlightBuilder.createFlights();
+        flights.forEach(System.out::println);
+        System.out.println();
 
         List<Filter> filters = List.of(
                 new FilterDepartureBeforeCurrentTime(),
@@ -15,9 +17,6 @@ public class Main {
         FilterFlightService service = new FilterFlightService(filters);
         List<Flight> filteredFlights = service.filterFlights(flights);
 
-        for (Flight flight : filteredFlights) {
-            System.out.println(flight);
-            System.out.println();
-        }
+        filteredFlights.forEach(System.out::println);
     }
 }
