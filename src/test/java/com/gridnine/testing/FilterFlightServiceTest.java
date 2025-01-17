@@ -9,33 +9,50 @@ import java.util.List;
 
 @DisplayName("FilterFlightService is work: ")
 public class FilterFlightServiceTest {
-//
-//    @BeforeEach
-//     void setUp() {
-//        List<Flight> flights = FlightBuilder.createFlights();
-//    }
+
+    private List<Flight> flights;
+
+    @BeforeEach
+     void setUp() {
+        flights = FlightBuilder.createFlights();
+    }
 
     @Test
-    void test1() {
-        List<Flight> flights = FlightBuilder.createFlights();
+    void testFilterDepartureBeforeCurrentTime() {
         Filter filter = new FilterDepartureBeforeCurrentTime();
         List<Flight> filteredFlights = filter.filter(flights);
         Assertions.assertEquals(5, filteredFlights.size());
     }
 
     @Test
-    void test2() {
-        List<Flight> flights = FlightBuilder.createFlights();
+    void testFilterArrivalDateEarlierDepartureDate() {
         Filter filter = new FilterArrivalDateEarlierDepartureDate();
         List<Flight> filteredFlights = filter.filter(flights);
         Assertions.assertEquals(5, filteredFlights.size());
     }
 
     @Test
-    void test3() {
-        List<Flight> flights = FlightBuilder.createFlights();
+    void testFilterIntervalBetweenArrivalAndDepartureMoreTwoHours() {
         Filter filter = new FilterIntervalBetweenArrivalAndDepartureMoreTwoHours();
         List<Flight> filteredFlights = filter.filter(flights);
         Assertions.assertEquals(5, filteredFlights.size());
+    }
+
+    @Test
+    void testThreeFilters() {
+        Filter filterDepartureBeforeCurrentTime = new FilterDepartureBeforeCurrentTime();
+        Filter filterArrivalDateEarlierDepartureDate = new FilterArrivalDateEarlierDepartureDate();
+        Filter filterIntervalBetweenArrivalAndDepartureMoreTwoHours =
+                new FilterIntervalBetweenArrivalAndDepartureMoreTwoHours();
+
+        List<Filter> filters = List.of(
+                filterDepartureBeforeCurrentTime,
+                filterArrivalDateEarlierDepartureDate,
+                filterIntervalBetweenArrivalAndDepartureMoreTwoHours
+        );
+
+        FilterFlightService service = new FilterFlightService(filters);
+        List<Flight> filteredFlights = service.filterFlights(flights);
+        Assertions.assertEquals(3, filteredFlights.size());
     }
 }
